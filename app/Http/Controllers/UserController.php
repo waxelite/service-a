@@ -106,4 +106,21 @@ class UserController extends Controller
 
         return response()->json(['message' => 'User deleted successfully']);
     }
+
+    /**
+     * Проверка существования пользователя по ID
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function checkUserExists(int $id): JsonResponse
+    {
+        $userExists = $this->userService->userExists($id);
+
+        if ($userExists) {
+            return response()->json(['message' => 'User exists']);
+        } else {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+    }
 }

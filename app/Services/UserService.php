@@ -48,4 +48,11 @@ class UserService
 
         return $user ? $user->delete() : false;
     }
+
+    public function userExists(int $id): bool
+    {
+        $user = User::find($id);
+
+        return $user ? $user->exists : false;
+    }
 }
