@@ -118,9 +118,9 @@ class UserController extends Controller
         $userExists = $this->userService->userExists($id);
 
         if ($userExists) {
-            return response()->json(['message' => 'User exists']);
+            return response()->json(['message' => 'User exists', 'exists' => true]);
         } else {
-            return response()->json(['message' => 'User not found'], 404);
+            return response()->json(['message' => 'User not found', 'exists' => false], 404);
         }
     }
 }
