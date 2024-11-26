@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
+    private RabbitService $rabbitService;
+
+    public function __construct(RabbitService $rabbitService)
+    {
+        $this->rabbitService = $rabbitService;
+    }
+
     public function getAll(): Collection
     {
         return User::all();
@@ -22,7 +29,11 @@ class UserService
     {
         $data['password'] = Hash::make($data['password']);
 
-        return User::create($data);
+        $user = User::create($data);
+
+        $this->rabbitService->publishMessage(json_encode(['event' => 'UserCreated', 'users' => $this->getAll()]));
+
+        return $user;
     }
 
     public function update(int $id, array $data): ?User
